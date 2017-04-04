@@ -1,6 +1,6 @@
 param([string]$Filter = "*", [switch]$UWPMultiArchitecture = $false, [string]$DllName, [string]$ProjectFolderNameFilter)
-Write-Host "NuGet-Pack script executed"
-Write-Host "==========================`n"
+Write-Host "`nNuGet-Pack script executed"
+Write-Host   "=========================="
 
 if ([string]::IsNullOrWhiteSpace($Filter))
 {
@@ -38,7 +38,7 @@ if ($UWPMultiArchitecture)
         throw "Unable to find CorFlags.exe. `$corFlags: '$corFlags'"
     }
 
-    Write-Host "`nSelected CorFlags file:" $corFlags
+    Write-Host "Selected CorFlags file:" $corFlags
     
     $projectFolders     = Get-ChildItem -Directory -Filter $ProjectFolderNameFilter
     $binFolders 		= $projectFolders | ForEach-Object{ Get-ChildItem $_.FullName -Directory -Filter "bin" }
@@ -74,6 +74,8 @@ if ($UWPMultiArchitecture)
         }
         
         $dlls = Get-ChildItem "$referenceFolder\Release" -File -Filter "$DllName.dll"
+
+        Write-Host "Looking for a DLL using filter $DllName.dll in folder ${referenceFolder.FullName}\Release"
         
         foreach ($dll in $dlls)
         {

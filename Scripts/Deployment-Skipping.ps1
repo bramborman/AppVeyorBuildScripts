@@ -1,3 +1,5 @@
+Write-Host "Deployment-Skipping script executed" -ForegroundColor Green
+
 $skipDeploymentDirectives 	= "[skip deployment]", "[deployment skip]"
 $isInCommitMessage 			= @($skipDeploymentDirectives | Where-Object{ $env:APPVEYOR_REPO_COMMIT_MESSAGE -match $_ }).Length -gt 0
 $isInExtendedCommitMessage 	= @($skipDeploymentDirectives | Where-Object{ $env:APPVEYOR_REPO_COMMIT_MESSAGE_EXTENDED -match $_ }).Length -gt 0

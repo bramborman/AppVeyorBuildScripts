@@ -1,4 +1,5 @@
 param([string[]]$Branches = "master", [string]$Separator = "-", [ValidateRange(0, [int]::MaxValue)][int]$SplitIndex = 1)
+Write-Host "Set-PureBuildVersion script executed" -ForegroundColor Green
 
 if (($Branches -eq $null) -or ([string]::IsNullOrWhiteSpace($Branches.ToString())))
 {

@@ -1,5 +1,6 @@
 param([string]$Filter = "*", [switch]$UWPMultiArchitecture = $false, [string]$DllName, [string]$ProjectFolderNameFilter)
 Write-Host "NuGet-Pack script executed" -ForegroundColor Green
+Write-Host -NoNewline -ForegroundColor White
 
 if ([string]::IsNullOrWhiteSpace($Filter))
 {

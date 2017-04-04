@@ -36,7 +36,7 @@ if ($UWPMultiArchitecture)
         throw "Unable to find CorFlags.exe. `$corFlags: '$corFlags'"
     }
 
-    Write-Host "`nSelected CorFlags file:" $corFlags
+    Write-Host "`nSelected CorFlags file:" $corFlags -ForegroundColor Green
     
     $projectFolders     = Get-ChildItem -Directory -Filter $ProjectFolderNameFilter
     $binFolders 		= $projectFolders | ForEach-Object{ Get-ChildItem $_.FullName -Directory -Filter "bin" }
@@ -52,7 +52,7 @@ if ($UWPMultiArchitecture)
             
         if (!(Test-Path $x86Folder))
         {
-            Write-Host "Skipping reference assembly generation for $($binFolder.FullName) because it has no x86 directory."
+            Write-Host "Skipping reference assembly generation for $($binFolder.FullName) because it has no x86 directory." -ForegroundColor Green
             continue;
         }
         
@@ -75,7 +75,7 @@ if ($UWPMultiArchitecture)
         
         foreach ($dll in $dlls)
         {
-            Write-Host "`n`nConverting to AnyCPU: $dll"
+            Write-Host "`n`nConverting to AnyCPU: $dll" -ForegroundColor Green
             & $corFlags /32bitreq- $($dll.FullName)
         }
 

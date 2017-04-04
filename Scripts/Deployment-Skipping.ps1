@@ -6,7 +6,7 @@ if ($isInCommitMessage -or $isInExtendedCommitMessage)
 {
 	$message = "Deployment should be skipped in this build."
 	Add-AppveyorMessage $message
-	Write-Host $message
+	Write-Host $message -ForegroundColor Green
 
 	Set-AppveyorBuildVariable "SKIP_DEPLOYMENT" $true
 }

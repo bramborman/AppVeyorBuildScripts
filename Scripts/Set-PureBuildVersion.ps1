@@ -20,7 +20,7 @@ if ($changeBuildVersion -and ($env:APPVEYOR_PULL_REQUEST_TITLE -eq $null) -and (
 {
 	$message = "Changing the build version from '$env:APPVEYOR_BUILD_VERSION' to '$pureBuildVersion'"
 	Add-AppveyorMessage $message
-	Write-Host $message
+	Write-Host $message -ForegroundColor Green
 
 	Update-AppveyorBuild -Version $pureBuildVersion
 	# Set the environment variable explicitly so it will be preserved to deployments (specifically GitHub Releases)

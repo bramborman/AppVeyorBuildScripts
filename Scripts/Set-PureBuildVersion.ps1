@@ -1,5 +1,6 @@
 param([string[]]$Branches = "master", [string]$Separator = "-", [ValidateRange(0, [int]::MaxValue)][int]$SplitIndex = 1)
-Write-Host "Set-PureBuildVersion script executed" -ForegroundColor Green
+Write-Host "Set-PureBuildVersion script executed"
+Write-Host "====================================`n"
 
 if (($Branches -eq $null) -or ([string]::IsNullOrWhiteSpace($Branches.ToString())))
 {
@@ -21,7 +22,7 @@ if ($changeBuildVersion -and ($env:APPVEYOR_PULL_REQUEST_TITLE -eq $null) -and (
 {
 	$message = "Changing the build version from '$env:APPVEYOR_BUILD_VERSION' to '$pureBuildVersion'"
 	Add-AppveyorMessage $message
-	Write-Host $message -ForegroundColor Green
+	Write-Host $message
 
 	Update-AppveyorBuild -Version $pureBuildVersion
 	# Set the environment variable explicitly so it will be preserved to deployments (specifically GitHub Releases)

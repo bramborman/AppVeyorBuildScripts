@@ -1,5 +1,6 @@
 param([string]$Filter = "*", [switch]$UWPMultiArchitecture = $false, [string]$DllName, [string]$ProjectFolderNameFilter)
-Write-Host "NuGet-Pack script executed" -ForegroundColor Green
+Write-Host "NuGet-Pack script executed"
+Write-Host "==========================`n"
 
 if ([string]::IsNullOrWhiteSpace($Filter))
 {
@@ -37,7 +38,7 @@ if ($UWPMultiArchitecture)
         throw "Unable to find CorFlags.exe. `$corFlags: '$corFlags'"
     }
 
-    Write-Host "`nSelected CorFlags file:" $corFlags -ForegroundColor Green
+    Write-Host "`nSelected CorFlags file:" $corFlags
     
     $projectFolders     = Get-ChildItem -Directory -Filter $ProjectFolderNameFilter
     $binFolders 		= $projectFolders | ForEach-Object{ Get-ChildItem $_.FullName -Directory -Filter "bin" }
@@ -53,7 +54,7 @@ if ($UWPMultiArchitecture)
             
         if (!(Test-Path $x86Folder))
         {
-            Write-Host "Skipping reference assembly generation for $($binFolder.FullName) because it has no x86 directory." -ForegroundColor Green
+            Write-Host "Skipping reference assembly generation for $($binFolder.FullName) because it has no x86 directory."
             continue;
         }
         
@@ -76,7 +77,7 @@ if ($UWPMultiArchitecture)
         
         foreach ($dll in $dlls)
         {
-            Write-Host "`n`nConverting to AnyCPU: $dll" -ForegroundColor Green
+            Write-Host "`n`nConverting to AnyCPU: $dll"
             & $corFlags /32bitreq- $($dll.FullName)
         }
 

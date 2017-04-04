@@ -73,7 +73,7 @@ if ($UWPMultiArchitecture)
             Copy-Item $dll.FullName "$referenceFolder\Release"
         }
         
-        $dlls = Get-ChildItem "$referenceFolder\Release" -File -Filter $DllName
+        $dlls = Get-ChildItem "$referenceFolder\Release" -File -Filter "$DllName.dll"
         
         foreach ($dll in $dlls)
         {

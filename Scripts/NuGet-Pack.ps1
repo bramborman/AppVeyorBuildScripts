@@ -41,7 +41,13 @@ if ($UWPMultiArchitecture)
     Write-Host "Selected CorFlags file:" $corFlags
     
     $projectFolders     = Get-ChildItem -Directory -Filter $ProjectFolderNameFilter
+    
+    Write-Host "projectFolder: $projectFolders"
+
     $binFolders 		= $projectFolders | ForEach-Object{ Get-ChildItem $_.FullName -Directory -Filter "bin" }
+    
+    Write-Host "binFolder: $binFolders"
+
     $referenceCreated   = $false
 
     # Create reference assemblies, because NuGet packages cannot be used otherwise.
@@ -51,6 +57,10 @@ if ($UWPMultiArchitecture)
     {
         $x86Folder 			= Join-Path $binFolder.FullName "x86"
         $referenceFolder 	= Join-Path $binFolder.FullName "Reference"
+        
+        Write-Host "x86Folder: $x86Folders"
+        
+        Write-Host "referenceFolder: $referenceFolders"
             
         if (!(Test-Path $x86Folder))
         {

@@ -1,4 +1,4 @@
-param([string]$Filter = "*", [switch]$UWPMultiArchitecture = $false, [string]$DllName, [string]$ProjectFolderNameFilter)
+param([string]$Filter = "*", [switch]$UWPMultiArchitecture = $false, [string]$DllFilter, [string]$ProjectFoldersFilter)
 Write-Host "`nNuGet-Pack script executed"
 Write-Host   "=========================="
 
@@ -9,14 +9,14 @@ if ([string]::IsNullOrWhiteSpace($Filter))
 
 if ($UWPMultiArchitecture)
 {
-    if ([string]::IsNullOrWhiteSpace($DllName))
+    if ([string]::IsNullOrWhiteSpace($DllFilter))
     {
-        throw "Parameter `$DllName must not be null or white space when `$UWPMultiArchitecture is true."
+        throw "Parameter `$DllFilter must not be null or white space when `$UWPMultiArchitecture is true."
     }
     
-    if ([string]::IsNullOrWhiteSpace($ProjectFolderNameFilter))
+    if ([string]::IsNullOrWhiteSpace($ProjectFoldersFilter))
     {
-        throw "Parameter `$ProjectFolderNameFilter must not be null or white space when `$UWPMultiArchitecture is true."
+        throw "Parameter `$ProjectFoldersFilter must not be null or white space when `$UWPMultiArchitecture is true."
     }
 
     # Find the newest version of the NETFX Tools
@@ -39,8 +39,8 @@ if ($UWPMultiArchitecture)
     }
 
     Write-Host "Selected CorFlags file:" $corFlags
-    
-    $projectFolders     = Get-ChildItem -Directory -Filter $ProjectFolderNameFilter
+
+    $projectFolders     = Get-ChildItem -Directory -Filter $ProjectFoldersFilter
     $binFolders 		= $projectFolders | ForEach-Object{ Get-ChildItem $_.FullName -Directory -Filter "bin" }
     $referenceCreated   = $false
 
@@ -49,9 +49,9 @@ if ($UWPMultiArchitecture)
     # It's a bit overkill but who cares - the process is very fast and keeps the script simple.
     foreach ($binFolder in $binFolders)
     {
-        $x86Folder 			= Join-Path $binFolder.FullName "\x86"
-        $referenceFolder 	= Join-Path $binFolder.FullName "\Reference"
-
+        $x86Folder 			= Join-Path $binFolder.FullName "x86"
+        $referenceFolder 	= Join-Path $binFolder.FullName "Reference"
+            
         if (!(Test-Path $x86Folder))
         {
             Write-Host "Skipping reference assembly generation for $($binFolder.FullName) because it has no x86 directory."
@@ -66,15 +66,15 @@ if ($UWPMultiArchitecture)
         New-Item $referenceFolder -ItemType Directory
         New-Item "$referenceFolder\Release" -ItemType Directory
         
-        $dlls = Get-ChildItem "$x86Folder\Release" -File -Filter $DllName
-
+        $dlls = Get-ChildItem "$x86Folder\Release" -File -Filter $DllFilter
+        
         foreach ($dll in $dlls)
         {
             Copy-Item $dll.FullName "$referenceFolder\Release"
         }
         
-        $dlls = Get-ChildItem "$referenceFolder\Release" -File -Filter "$DllName.dll"
-
+        $dlls = Get-ChildItem "$referenceFolder\Release" -File -Filter $DllFilter
+        
         foreach ($dll in $dlls)
         {
             Write-Host "`n`nConverting to AnyCPU: $dll"

@@ -55,12 +55,13 @@ if ($UWPMultiArchitecture)
     # It's a bit overkill but who cares - the process is very fast and keeps the script simple.
     foreach ($binFolder in $binFolders)
     {
+        Write-Host "binFolder: $binFolder.FullName"
         $x86Folder 			= Join-Path $binFolder.FullName "x86"
         $referenceFolder 	= Join-Path $binFolder.FullName "Reference"
         
-        Write-Host "x86Folder: $x86Folder"
+        Write-Host "x86Folder: $x86Folder.FullName"
         
-        Write-Host "referenceFolder: $referenceFolder"
+        Write-Host "referenceFolder: $referenceFolder.FullName"
             
         if (!(Test-Path $x86Folder))
         {

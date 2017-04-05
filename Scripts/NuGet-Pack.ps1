@@ -58,9 +58,9 @@ if ($UWPMultiArchitecture)
         $x86Folder 			= Join-Path $binFolder.FullName "x86"
         $referenceFolder 	= Join-Path $binFolder.FullName "Reference"
         
-        Write-Host "x86Folder: $x86Folders"
+        Write-Host "x86Folder: $x86Folder"
         
-        Write-Host "referenceFolder: $referenceFolders"
+        Write-Host "referenceFolder: $referenceFolder"
             
         if (!(Test-Path $x86Folder))
         {

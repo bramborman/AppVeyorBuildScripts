@@ -41,15 +41,7 @@ if ($UWPMultiArchitecture)
     Write-Host "Selected CorFlags file:" $corFlags
     
     $projectFolders     = Get-ChildItem -Directory -Filter $ProjectFolderNameFilter
-    
-    Write-Host "projectFolders: $projectFolders"
-
     $binFolders 		= $projectFolders | ForEach-Object{ Get-ChildItem $_.FullName -Directory -Filter "bin" }
-    
-    Write-Host "binFolders: " -NoNewline
-    $projectFolders | ForEach-Object{ Write-Host "$($_.FullName)" -NoNewline }
-    
-
     $referenceCreated   = $false
 
     # Create reference assemblies, because NuGet packages cannot be used otherwise.
@@ -57,16 +49,9 @@ if ($UWPMultiArchitecture)
     # It's a bit overkill but who cares - the process is very fast and keeps the script simple.
     foreach ($binFolder in $binFolders)
     {
-        Write-Host "`nbinFolder: $($binFolder.FullName)"
         $x86Folder 			= Join-Path $binFolder.FullName "\x86"
         $referenceFolder 	= Join-Path $binFolder.FullName "\Reference"
 
-        Write-Host Join-Path $binFolder.FullName "\x86"
-        
-        Write-Host "x86Folder: $($x86Folder.FullName)"
-        
-        Write-Host "referenceFolder: $($referenceFolder.FullName)"
-            
         if (!(Test-Path $x86Folder))
         {
             Write-Host "Skipping reference assembly generation for $($binFolder.FullName) because it has no x86 directory."
@@ -83,8 +68,6 @@ if ($UWPMultiArchitecture)
         
         $dlls = Get-ChildItem "$x86Folder\Release" -File -Filter $DllName
 
-        Write-Host "dlls: $dlls"
-        
         foreach ($dll in $dlls)
         {
             Copy-Item $dll.FullName "$referenceFolder\Release"
@@ -92,15 +75,13 @@ if ($UWPMultiArchitecture)
         
         $dlls = Get-ChildItem "$referenceFolder\Release" -File -Filter "$DllName.dll"
 
-        Write-Host "Looking for a DLL using filter $DllName.dll in folder $($referenceFolder.FullName)\Release"
-        
         foreach ($dll in $dlls)
         {
             Write-Host "`n`nConverting to AnyCPU: $dll"
             & $corFlags /32bitreq- $($dll.FullName)
-        }
 
-        $referenceCreated = $true
+            $referenceCreated = $true
+        }
     }
 
     if ($referenceCreated -eq $false)

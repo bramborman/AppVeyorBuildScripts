@@ -60,6 +60,8 @@ if ($UWPMultiArchitecture)
         Write-Host "`nbinFolder: $($binFolder.FullName)"
         $x86Folder 			= Join-Path $binFolder.FullName "\x86"
         $referenceFolder 	= Join-Path $binFolder.FullName "\Reference"
+
+        Write-Host Join-Path $binFolder.FullName "\x86"
         
         Write-Host "x86Folder: $($x86Folder.FullName)"
         
@@ -80,6 +82,8 @@ if ($UWPMultiArchitecture)
         New-Item "$referenceFolder\Release" -ItemType Directory
         
         $dlls = Get-ChildItem "$x86Folder\Release" -File -Filter $DllName
+
+        Write-Host "dlls: $dlls"
         
         foreach ($dll in $dlls)
         {

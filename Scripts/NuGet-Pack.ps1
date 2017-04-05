@@ -42,11 +42,13 @@ if ($UWPMultiArchitecture)
     
     $projectFolders     = Get-ChildItem -Directory -Filter $ProjectFolderNameFilter
     
-    Write-Host "projectFolder: $projectFolders"
+    Write-Host "projectFolders: $projectFolders"
 
     $binFolders 		= $projectFolders | ForEach-Object{ Get-ChildItem $_.FullName -Directory -Filter "bin" }
     
-    Write-Host "binFolder: $binFolders"
+    Write-Host "binFolders: " -NoNewline
+    $projectFolders | ForEach-Object{ Write-Host "$($_.FullName)" -NoNewline }
+    
 
     $referenceCreated   = $false
 
@@ -55,13 +57,13 @@ if ($UWPMultiArchitecture)
     # It's a bit overkill but who cares - the process is very fast and keeps the script simple.
     foreach ($binFolder in $binFolders)
     {
-        Write-Host "binFolder: $binFolder.FullName"
+        Write-Host "binFolder: $($binFolder.FullName)"
         $x86Folder 			= Join-Path $binFolder.FullName "x86"
         $referenceFolder 	= Join-Path $binFolder.FullName "Reference"
         
-        Write-Host "x86Folder: $x86Folder.FullName"
+        Write-Host "x86Folder: $($x86Folder.FullName)"
         
-        Write-Host "referenceFolder: $referenceFolder.FullName"
+        Write-Host "referenceFolder: $($referenceFolder.FullName)"
             
         if (!(Test-Path $x86Folder))
         {
@@ -86,7 +88,7 @@ if ($UWPMultiArchitecture)
         
         $dlls = Get-ChildItem "$referenceFolder\Release" -File -Filter "$DllName.dll"
 
-        Write-Host "Looking for a DLL using filter $DllName.dll in folder ${referenceFolder.FullName}\Release"
+        Write-Host "Looking for a DLL using filter $DllName.dll in folder $($referenceFolder.FullName)\Release"
         
         foreach ($dll in $dlls)
         {

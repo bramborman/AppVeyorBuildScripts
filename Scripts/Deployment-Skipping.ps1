@@ -3,7 +3,11 @@ Write-Host   "==================================="
 
 $skipDeploymentDirectives 	= "[skip deployment]", "[deployment skip]"
 $isInCommitMessage 			= @($skipDeploymentDirectives | Where-Object{ $env:APPVEYOR_REPO_COMMIT_MESSAGE.Contains($_) }).Length -gt 0
-$isInExtendedCommitMessage 	= @($skipDeploymentDirectives | Where-Object{ $env:APPVEYOR_REPO_COMMIT_MESSAGE_EXTENDED.Contains($_) }).Length -gt 0
+
+if ($env:APPVEYOR_REPO_COMMIT_MESSAGE_EXTENDED)
+{
+    $isInExtendedCommitMessage = @($skipDeploymentDirectives | Where-Object{ $env:APPVEYOR_REPO_COMMIT_MESSAGE_EXTENDED.Contains($_) }).Length -gt 0
+}
 
 if ($isInCommitMessage -or $isInExtendedCommitMessage)
 {

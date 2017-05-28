@@ -13,12 +13,12 @@ if ([string]::IsNullOrWhiteSpace($Separator))
 }
 
 $buildVersion = $env:APPVEYOR_BUILD_VERSION
-$version = $buildVersion.Substring(0, $buildVersion.IndexOf($Separator) - 1)
+$version = $buildVersion.Substring(0, $buildVersion.IndexOf($Separator))
 
 $newBuildVersion = $Template.Replace("[Version]", $version)
 $newBuildVersion = $newBuildVersion.Replace("[Branch]", $env:APPVEYOR_REPO_BRANCH)
 $newBuildVersion = $newBuildVersion.Replace("[DateTime]", [DateTime]::UtcNow.ToString("yyyy-MM-dd_HH:mm:ss"))
-$newBuildVersion = $newBuildVersion.Replace("[Build]", $env:APPVEYOR_BUILD_VERSION)
+$newBuildVersion = $newBuildVersion.Replace("[Build]", $env:APPVEYOR_BUILD_NUMBER)
 
 Update-AppveyorBuild -Version $newBuildVersion
 # Set the environment variable explicitly so it will be preserved to deployments (specifically GitHub Releases)

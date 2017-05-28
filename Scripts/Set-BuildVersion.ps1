@@ -1,4 +1,4 @@
-param([string]$Template = "[Version]-[Branch]_[DateTime]_[Build]", [string]$Separator = "-")
+param([string]$Template = "[Version]-[Branch]-[DateTime]-[Build]", [string]$Separator = "-")
 Write-Host "`nSet-BuildVersion script executed"
 Write-Host   "================================"
 
@@ -17,7 +17,7 @@ $version = $buildVersion.Substring(0, $buildVersion.IndexOf($Separator))
 
 $newBuildVersion = $Template.Replace("[Version]", $version)
 $newBuildVersion = $newBuildVersion.Replace("[Branch]", $env:APPVEYOR_REPO_BRANCH)
-$newBuildVersion = $newBuildVersion.Replace("[DateTime]", [DateTime]::UtcNow.ToString("yyyy-MM-dd_HH-mm-ss"))
+$newBuildVersion = $newBuildVersion.Replace("[DateTime]", [DateTime]::UtcNow.ToString("yyyyMMdd-HHmmss"))
 $newBuildVersion = $newBuildVersion.Replace("[Build]", $env:APPVEYOR_BUILD_NUMBER)
 
 Update-AppveyorBuild -Version $newBuildVersion

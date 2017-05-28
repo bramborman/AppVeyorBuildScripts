@@ -7,9 +7,9 @@ if (($Branches -eq $null) -or ([string]::IsNullOrWhiteSpace($Branches.ToString()
 	throw "Parameter `$Branches must not be null or empty."
 }
 
-if ([string]::IsNullOrWhiteSpace($Branches))
+if ([string]::IsNullOrWhiteSpace($Separator))
 {
-    throw "Parameter `$Branches must not be null or white space."
+    throw "Parameter `$Separator must not be null or white space."
 }
 
 $pureBuildVersion = $env:APPVEYOR_BUILD_VERSION.Split($Separator) | Select-Object -first $SplitIndex
